@@ -1,5 +1,6 @@
 package com.example.emicalculator
 
+import java.text.DecimalFormat
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -26,55 +27,42 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        setSupportActionBar(binding.toolbar)
+        binding.buttonCalculateEMI.setOnClickListener{performCalculation()}
+        
+    }
 
-//        val navController = findNavController(R.id.nav_host_fragment_content_main)
-//        appBarConfiguration = AppBarConfiguration(navController.graph)
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-//
-//        binding.fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null)
-//                .setAnchorView(R.id.fab).show()
-//        }
+    private fun performCalculation() {
+        val loanAmountStr = binding.editTextLoanAmount.text.toString()
+        val interestRateStr = binding.editTextInterestRate.text.toString()
+        val loanTenureStr = binding.editTextTenure.text.toString()
 
-        fun calculateEMI(loanAmount: Double, interestRate: Double, loanTenure: Int): Double {
-            // Convert annual interest rate to monthly and decimal form
-            val monthlyRate = interestRate / 12 / 100
-            // Calculate (1 + r)^n
-            val factor = (1 + monthlyRate).pow(loanTenure.toDouble())
-            // Calculate EMI using the formula
-            val emi = (loanAmount * monthlyRate * factor) / (factor - 1)
-
-            return emi
+        if(loanAmountStr.isEmpty() || interestRateStr.isEmpty() || loanTenureStr.isEmpty()) {
+            Toast.makeText(this,"Fields Cannot Be Empty", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        val loanAmount = findViewById<EditText>(R.id.loan_amount)
-        val interestRate = findViewById<EditText>(R.id.interest_rate)
-        val loanTenure = findViewById<EditText>(R.id.tenure)
-        val calculateButton = findViewById<Button>(R.id.buttonCalculateEMI)
-        val resultTv = findViewById<TextView>(R.id.textViewEMIResult)
-        val resetButton = findViewById<Button>(R.id.button_reset)
+        val loanAmount = loanAmountStr.toString().toDoubleOrNull()
+        val interestRate = interestRateStr.toString().toDoubleOrNull()
+        val loanTenure = loanTenureStr.toString().toIntOrNull()
 
-        calculateButton.setOnClickListener() {
-            val loanDouble = loanAmount.text.toString().toDoubleOrNull()
-            val interestDouble = interestRate.text.toString().toDoubleOrNull()
-            val loanInt = loanTenure.text.toString().toIntOrNull()
-            println(loanDouble)
-            println(interestDouble)
-            println(loanInt)
-            if(loanDouble != null && interestDouble != null && loanInt != null) {
-                val emiResult = calculateEMI(loanDouble, interestDouble, loanInt)
-                resultTv.text = emiResult.toString()
-            } else {
-                Toast.makeText(this, "Please input the right amount", Toast.LENGTH_SHORT).show()
-            }
+        if(loanAmount == null || interestRate == null || loanTenure == null) {
+            Toast.makeText(this,"Invalid Input!",Toast.LENGTH_SHORT).show()
+            return
         }
-        resetButton.setOnClickListener {
-            loanAmount.text.clear()
-            interestRate.text.clear()
-            loanTenure.text.clear()
-            Toast.makeText(this, "Success reset", Toast.LENGTH_SHORT).show()
+
+        val monthlyInterestRate = interestRate / (12 * 100)
+        val emi = calculateEMI(loanAmount, monthlyInterestRate, loanTenure)
+
+        val formatOutput = DecimalFormat("#,##0.00").format(emi)
+        binding.textViewEMIResult.text = "Your EMI is: $formatOutput"
+    }
+
+    private fun calculateEMI(principal: Double, rate: Double, months: Int): Double {
+        return if (rate == 0.0) {
+            principal / months
+        } else {
+            val factor = (1 + rate).pow(months)
+            (principal * rate * factor) / (factor - 1)
         }
     }
 
