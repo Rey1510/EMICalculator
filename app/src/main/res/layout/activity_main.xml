@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Loan Amount Input -->
+    <EditText
+        android:id="@+id/editTextLoanAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Loan Amount"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Interest Rate Input -->
+    <EditText
+        android:id="@+id/editTextInterestRate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Interest Rate (%)"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/editTextLoanAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Loan Tenure Input -->
+    <EditText
+        android:id="@+id/editTextTenure"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Loan Tenure (Months)"
+        android:inputType="number"
+        android:layout_marginBottom="32dp"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/editTextInterestRate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Calculate EMI Button -->
+    <Button
+        android:id="@+id/buttonCalculateEMI"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Calculate EMI"
+        android:layout_marginBottom="32dp"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/editTextTenure"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- EMI Result TextView -->
+    <TextView
+        android:id="@+id/textViewEMIResult"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Display EMI"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/buttonCalculateEMI"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
