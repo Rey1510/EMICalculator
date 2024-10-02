@@ -1,5 +1,6 @@
 package com.example.emicalculator
 
+import java.text.DecimalFormat
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +10,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.example.emicalculator.databinding.ActivityMainBinding
+import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,20 +21,44 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+        binding.buttonCalculateEMI.setOnClickListener{performCalculation()}
+    }
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+    private fun performCalculation() {
+        val loanAmountStr = binding.editTextLoanAmount.text.toString()
+        val interestRateStr = binding.editTextInterestRate.text.toString()
+        val loanTenureStr = binding.editTextTenure.text.toString()
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
+        if(loanAmountStr.isEmpty() || interestRateStr.isEmpty() || loanTenureStr.isEmpty()) {
+            Toast.makeText(this,"Fields Cannot Be Empty", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val loanAmount = loanAmountStr.toString().toDoubleOrNull()
+        val interestRate = interestRateStr.toString().toDoubleOrNull()
+        val loanTenure = loanTenureStr.toString().toIntOrNull()
+
+        if(loanAmount == null || interestRate == null || loanTenure == null) {
+            Toast.makeText(this,"Invalid Input!",Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val monthlyInterestRate = interestRate / (12 * 100)
+        val emi = calculateEMI(loanAmount, monthlyInterestRate, loanTenure)
+
+        val formatOutput = DecimalFormat("#,##0.00").format(emi)
+        binding.textViewEMIResult.text = "Your EMI is: $formatOutput"
+    }
+
+    private fun calculateEMI(principal: Double, rate: Double, months: Int): Double {
+        return if (rate == 0.0) {
+            principal / months
+        } else {
+            val factor = (1 + rate).pow(months)
+            (principal * rate * factor) / (factor - 1)
         }
     }
 
