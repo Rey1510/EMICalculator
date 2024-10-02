@@ -27,8 +27,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.buttonCalculateEMI.setOnClickListener{performCalculation()}
-        
+        val resetButton = binding.buttonReset
+        val loanAmount = binding.editTextLoanAmount
+        val interestRate = binding.editTextInterestRate
+        val loanTenure = binding.editTextTenure
+
+        binding.buttonCalculateEMI.setOnClickListener { performCalculation() }
+        resetButton.setOnClickListener {
+            loanAmount.text.clear()
+            interestRate.text.clear()
+            loanTenure.text.clear()
+            Toast.makeText(this, "Success reset", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun performCalculation() {
@@ -36,8 +46,8 @@ class MainActivity : AppCompatActivity() {
         val interestRateStr = binding.editTextInterestRate.text.toString()
         val loanTenureStr = binding.editTextTenure.text.toString()
 
-        if(loanAmountStr.isEmpty() || interestRateStr.isEmpty() || loanTenureStr.isEmpty()) {
-            Toast.makeText(this,"Fields Cannot Be Empty", Toast.LENGTH_SHORT).show()
+        if (loanAmountStr.isEmpty() || interestRateStr.isEmpty() || loanTenureStr.isEmpty()) {
+            Toast.makeText(this, "Fields Cannot Be Empty", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -45,8 +55,8 @@ class MainActivity : AppCompatActivity() {
         val interestRate = interestRateStr.toString().toDoubleOrNull()
         val loanTenure = loanTenureStr.toString().toIntOrNull()
 
-        if(loanAmount == null || interestRate == null || loanTenure == null) {
-            Toast.makeText(this,"Invalid Input!",Toast.LENGTH_SHORT).show()
+        if (loanAmount == null || interestRate == null || loanTenure == null) {
+            Toast.makeText(this, "Invalid Input!", Toast.LENGTH_SHORT).show()
             return
         }
 

@@ -8,7 +8,7 @@
 
     <!-- Loan Amount Input -->
     <EditText
-        android:id="@+id/loan_amount"
+        android:id="@+id/editTextLoanAmount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -21,7 +21,7 @@
 
     <!-- Interest Rate Input -->
     <EditText
-        android:id="@+id/interest_rate"
+        android:id="@+id/editTextInterestRate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -30,11 +30,11 @@
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loan_amount" />
+        app:layout_constraintTop_toBottomOf="@id/editTextLoanAmount" />
 
     <!-- Loan Tenure Input -->
     <EditText
-        android:id="@+id/tenure"
+        android:id="@+id/editTextTenure"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
@@ -43,7 +43,7 @@
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/interest_rate" />
+        app:layout_constraintTop_toBottomOf="@id/editTextInterestRate" />
 
     <!-- Calculate EMI Button -->
 
@@ -61,14 +61,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tenure"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTenure"
         app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/buttonCalculateEMI"
         android:layout_width="160dp"
         android:layout_height="70dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="32dp"
         android:padding="12dp"
         android:text="Calculate EMI"
         app:layout_constraintBottom_toBottomOf="parent"
